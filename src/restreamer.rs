@@ -81,14 +81,17 @@ pub fn _get_stats(instance_name: &String, base_url: &String) -> Result<super::st
     });
 
     let _ = async_std::task::block_on(async {
-        let mut res = surf::get(format!("{}{}{}",base_url,instance_name,"/stats.xsl")).await.unwrap();
-        let xml_contents = res.body_string().await.unwrap();
+        if let Ok(mut res) = surf::get(format!("{}{}{}",base_url,instance_name,"/stats.xsl")).await{
+            
+            let xml_contents = res.body_string().await.unwrap();
         
-        if let Ok(xml_json) = xml_string_to_json(xml_contents, &quickxml_to_serde::Config::new_with_defaults()){
-            let serde_xml: super::structs::stats::Root = serde_json::from_value(xml_json).unwrap();
-            to_return = Ok(serde_xml);
-            result = true;
-        }
+            if let Ok(xml_json) = xml_string_to_json(xml_contents, &quickxml_to_serde::Config::new_with_defaults()){
+                let serde_xml: super::structs::stats::Root = serde_json::from_value(xml_json).unwrap();
+                to_return = Ok(serde_xml);
+                result = true;
+            }
+        };
+        
     });
 
     if result {
@@ -113,21 +116,23 @@ pub fn _get_ffprobe(instance: &Instance, secret: &String, base_url: &String) -> 
 
     let mut probe_result = "".to_string();
     let _ = async_std::task::block_on(async {
-        let mut r = surf::post(format!(
+        if let Ok(mut r) = surf::post(format!(
             "{}{}{}",
             base_url, instance.name, "/v1/probe"
         ))
         .body_json(&probe_request)
         .unwrap()
         .await
-        .unwrap();
-        probe_result = r.body_string().await.unwrap();
-        let s = r.status().to_string();
-        if s == "200 OK"{
-            let serde_ffprobe: super::structs::ffprobe::Root = serde_json::from_str(&probe_result).unwrap();
-            to_return = Ok(serde_ffprobe);
-            result = true;
-        }
+        {
+            probe_result = r.body_string().await.unwrap();
+            let s = r.status().to_string();
+            if s == "200 OK"{
+                let serde_ffprobe: super::structs::ffprobe::Root = serde_json::from_str(&probe_result).unwrap();
+                to_return = Ok(serde_ffprobe);
+                result = true;
+            }
+        };
+        
     });
 
     if result {
