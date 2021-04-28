@@ -84,11 +84,13 @@ pub fn _get_stats(instance_name: &String, base_url: &String) -> Result<super::st
         if let Ok(mut res) = surf::get(format!("{}{}{}",base_url,instance_name,"/stats.xsl")).await{
             
             let xml_contents = res.body_string().await.unwrap();
-        
-            if let Ok(xml_json) = xml_string_to_json(xml_contents, &quickxml_to_serde::Config::new_with_defaults()){
-                let serde_xml: super::structs::stats::Root = serde_json::from_value(xml_json).unwrap();
-                to_return = Ok(serde_xml);
-                result = true;
+            let s = res.status().to_string();
+            if s == "200 OK"{
+                if let Ok(xml_json) = xml_string_to_json(xml_contents, &quickxml_to_serde::Config::new_with_defaults()){
+                    let serde_xml: super::structs::stats::Root = serde_json::from_value(xml_json).unwrap();
+                    to_return = Ok(serde_xml);
+                    result = true;
+                }
             }
         };
         
