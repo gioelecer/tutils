@@ -153,7 +153,9 @@ pub fn _get_marathon(instance: &Instance, base_url: &String) -> Result<super::st
         });
     
         let _ = async_std::task::block_on(async {
-            if let Ok(mut res) = surf::get(format!("{}{}{}{}",base_url,"/v2/apps",instance.name,"?embed=app.taskStats&embed=app.readiness")).await{
+            let mut final_url = format!("{}{}{}{}",base_url,"/v2/apps",instance.name,"?embed=app.taskStats&embed=app.readiness");
+            println!("{}",final_url);
+            if let Ok(mut res) = surf::get(final_url).await{
                 
                 let contents = res.body_string().await.unwrap();
                 let s = res.status().to_string();
