@@ -20,7 +20,7 @@ pub struct Stream {
     pub codec_name: String,
     #[serde(rename = "codec_long_name")]
     pub codec_long_name: String,
-    pub profile: String,
+    pub profile: Option<String>,
     #[serde(rename = "codec_type")]
     pub codec_type: String,
     #[serde(rename = "codec_time_base")]
@@ -131,6 +131,6 @@ pub struct Tags {
     pub display_width: String,
     pub display_height: String,
     pub fps: String,
-    pub profile: String,
+    pub profile: Option<String>,
     pub level: String,
 }
