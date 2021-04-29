@@ -90,7 +90,7 @@ pub struct Video {
     #[serde(rename = "frame_rate")]
     pub frame_rate: f64,
     pub codec: String,
-    pub profile: String,
+    pub profile: Option<String>,
     pub level: f64,
 }
 
@@ -98,7 +98,7 @@ pub struct Video {
 #[serde(rename_all = "camelCase")]
 pub struct Audio {
     pub codec: String,
-    pub profile: String,
+    pub profile: Option<String>,
     pub channels: u64,
     #[serde(rename = "sample_rate")]
     pub sample_rate: u64,
