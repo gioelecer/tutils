@@ -143,3 +143,36 @@ pub fn _get_ffprobe(instance: &Instance, secret: &String, base_url: &String) -> 
         Err("Unable to retrieve ffprobe".to_string())
     }
 }
+
+
+pub fn _get_marathon(instance: &Instance, base_url: &String) -> Result<super::structs::marathon::Root, String> {
+
+        let mut result = false;
+        let mut to_return = Ok(super::structs::marathon::Root{
+            app: None
+        });
+    
+        let _ = async_std::task::block_on(async {
+            if let Ok(mut res) = surf::get(format!("{}{}{}{}",base_url,"/v2/apps",instance.name,"?embed=app.taskStats&embed=app.readiness")).await{
+                
+                let contents = res.body_string().await.unwrap();
+                let s = res.status().to_string();
+                if s == "200 OK"{
+                    
+                        let marathon_data: super::structs::marathon::Root = serde_json::from_str(&contents).unwrap();
+                        to_return = Ok(marathon_data);
+                        result = true;
+                    
+                }
+            };
+            
+        });
+    
+        if result {
+            return to_return
+        }else{
+            Err("Unable to retrieve stats".to_string())
+        }
+        
+    
+    }

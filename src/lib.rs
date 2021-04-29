@@ -24,3 +24,7 @@ pub fn get_stats(instance_name: &String, base_url: &String) -> Result<structs::s
 pub fn get_ffprobe(instance: &restreamer::Instance, secret: &String, base_url: &String) -> Result<structs::ffprobe::Root,String> {
     restreamer::_get_ffprobe(instance,secret,base_url)
 }
+
+pub fn get_marathon(instance: &restreamer::Instance, base_url: &String) -> Result<structs::marathon::Root,String> {
+    restreamer::_get_marathon(instance,base_url)
+}
