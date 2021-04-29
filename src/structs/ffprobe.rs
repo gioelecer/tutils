@@ -66,7 +66,7 @@ pub struct Stream {
     #[serde(rename = "start_pts")]
     pub start_pts: i64,
     #[serde(rename = "start_time")]
-    pub start_time: String,
+    pub start_time: f64,
     #[serde(rename = "bit_rate")]
     pub bit_rate: String,
     #[serde(rename = "bits_per_raw_sample")]
@@ -116,7 +116,7 @@ pub struct Format {
     #[serde(rename = "format_name")]
     pub format_name: String,
     #[serde(rename = "start_time")]
-    pub start_time: String,
+    pub start_time: f64,
     pub duration: String,
     #[serde(rename = "probe_score")]
     pub probe_score: i64,
