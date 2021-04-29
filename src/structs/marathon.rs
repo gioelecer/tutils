@@ -37,7 +37,7 @@ pub struct App {
     pub deployments: Vec<::serde_json::Value>,
     pub readiness_check_results: Vec<::serde_json::Value>,
     pub tasks: Vec<Task>,
-    pub last_task_failure: LastTaskFailure,
+    pub last_task_failure: Option<LastTaskFailure>,
     pub task_stats: TaskStats,
 }
 
@@ -137,8 +137,8 @@ pub struct UpgradeStrategy {
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VersionInfo {
-    pub last_scaling_at: String,
-    pub last_config_change_at: String,
+    pub last_scaling_at: Option<String>,
+    pub last_config_change_at: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -173,7 +173,7 @@ pub struct HealthCheckResult {
     pub consecutive_failures: i64,
     pub first_success: String,
     pub instance_id: String,
-    pub last_success: String,
+    pub last_success: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
@@ -199,7 +199,7 @@ pub struct LastTaskFailure {
 #[derive(Default, Debug, Clone, PartialEq, serde_derive::Serialize, serde_derive::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TaskStats {
-    pub started_after_last_scaling: StartedAfterLastScaling,
+    pub started_after_last_scaling: Option<StartedAfterLastScaling>,
     pub with_latest_config: WithLatestConfig,
     pub total_summary: TotalSummary,
 }
