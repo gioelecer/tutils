@@ -68,7 +68,7 @@ pub struct Stream {
     #[serde(rename = "start_time")]
     pub start_time: String,
     #[serde(rename = "bit_rate")]
-    pub bit_rate: String,
+    pub bit_rate: Option<String>,
     #[serde(rename = "bits_per_raw_sample")]
     pub bits_per_raw_sample: Option<String>,
     pub disposition: Disposition,
